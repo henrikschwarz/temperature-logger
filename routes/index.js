@@ -74,11 +74,42 @@ router.get('/device/:id', async function(req, res){
   } 
 })
 
-router.post('')
+router.get('/dataset/add', async function(req, res){
+    let device_list = await Device.find({});
+    if ( !device_list){
+      res.send(404).send("err")
+    }
+    res.render('add_dataset', {title: "Add device", device_list: device_list});
+})
+
+router.post('/dataset/add', async function(req, res){
+  let dataset_name = req.body['name'];
+  let device = req.body['device'];
+  let selected_device = await Device.findById(device);
+  if (!selected_device){
+    res.status(401).send('Couldnt find device.');
+    return false;
+  }
+  try{
+    Dataset.create({name: dataset_name, device: selected_device}).then((success) => {
+      console.log("Success added " + success);
+      res.redirect('/');
+      return false;
+    }).then((err) => {
+      res.send(401).send(err);
+      return false;
+    })
+  } catch (e) {
+    console.log(e);
+    next();
+  }
+})
+
 router.post('/dataset/:api_key/add', async function(req, res){
   const selected_dataset = await Dataset.findOne({api_key: req.params.api_key});
   if (!selected_dataset){
     res.status(404).send("not found");
+    console.log("Didnt find dataset");
     return false;
   }
   data = req.body['data'];
