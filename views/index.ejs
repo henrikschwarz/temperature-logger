@@ -9,16 +9,15 @@
 <body>
     Hello there! go to:
     <ul>
-        <% if (global.loggedIn === true) { %>
-            <li><a href="/device/add">Add device</a></li>
-            <li><a href="/dataset/add">Add dataset</a></li>
-        <% }  else { %>
-            <li><a href="/login">Login</a></li>
-        <% } %>
-            <li><a href="/devices">Devices</a></li>
-        <% if (global.loggedIn === true) { %>
-            <li><a href="/logout">Logout</a></li>
-        <% } %>
+        <a href="/make/device/new">
+            <li>Create device.</li>
+        </a>
+        <a href="/api/devices">
+            <li>Get all devices.</li>
+        </a>
+        <a href="/make/dataset/new">
+            <li>Create a dataset.</li>
+        </a>
     </ul>
 </body>
 </html>

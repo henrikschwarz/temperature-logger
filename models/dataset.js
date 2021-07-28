@@ -3,6 +3,7 @@ var Device = require('./device');
 var chance = require('chance').Chance();
 
 let dataSchema = new mongoose.Schema({
+    _id: false,
     date: {
         type: Date,
         default: new Date()
@@ -23,6 +24,9 @@ let datasetSchema = new mongoose.Schema({
     },
     api_key: {
         type: String,
+        default: function(){
+            return chance.string({ length: 128, casing: 'upper', alpha: true, numeric: true });
+        }
     },
     device: {
         type: Device.schema,
@@ -30,9 +34,5 @@ let datasetSchema = new mongoose.Schema({
     }
 })
 
-datasetSchema.pre('save', function(next) {
-    this.api_key = chance.string({ length: 128, casing: 'upper', alpha: true, numeric: true });
-    next();
-})
 
 module.exports = mongoose.model('Dataset', datasetSchema);
