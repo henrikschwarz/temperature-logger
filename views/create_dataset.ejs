@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%- process.env.APP_TITLE -%></title>
+</head>
+<body>
+    <h2>Create a new dataset</h2>
+    <form action="/api/dataset/new">
+        <input type="text" name="name"><br>
+        <select name="device_id" id="">
+            <% for (let item of devices){ %>
+            <option value="<%- item.device_id -%>"><%- item.name -%></option>
+            <% } %>
+        </select>
+    </form>
+</body>
+</html>

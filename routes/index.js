@@ -1,5 +1,6 @@
 var express = require('express');
 var router = express.Router();
+<<<<<<< HEAD
 var authMiddleware = require('../middleware/authenticated');
 
 var Device = require("../models/device");
@@ -28,10 +29,35 @@ router.post("/login", function(req, res){
 })
 
 router.get('/logout', function(req, res) {
+=======
+
+/* GET home page. */
+router.get('/', function(req, res, next) {
+  res.render('index', { title: 'Express' });
+});
+
+router.get('/login', function(req, res) {
+  res.render('login', {title: "Login"});
+})
+
+router.post('/login', function(req, res) {
+  if (req.body["username"] === process.env.ADMIN_USERNAME &&
+    req.body["password"] === process.env.ADMIN_PASSWORD){
+      global.loggedIn = true;
+      res.redirect('/');
+    }
+  else {
+    res.render("/login", {title: "Login", error: "Wrong password or username."})
+  }
+})
+
+router.get("/logout", function(req, res){
+>>>>>>> c4e9519c5f32ff2bafc25d6e3fdd1b54d42221a2
   global.loggedIn = false;
   res.redirect("/");
 })
 
+<<<<<<< HEAD
 router.post('/device/add', authMiddleware, function(req, res){
   let name = req.body['name'];
   let device_id = req.body['device_id'];
@@ -122,4 +148,6 @@ router.get("/401", function(req, res){
   res.status(401).render('401');
 })
 
+=======
+>>>>>>> c4e9519c5f32ff2bafc25d6e3fdd1b54d42221a2
 module.exports = router;

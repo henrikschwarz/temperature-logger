@@ -5,7 +5,11 @@
  */
 
 var app = require('../app');
+<<<<<<< HEAD
 var debug = require('debug')('temperature-logger:server');
+=======
+var debug = require('debug')('temperature-logger-api:server');
+>>>>>>> c4e9519c5f32ff2bafc25d6e3fdd1b54d42221a2
 var http = require('http');
 
 /**
