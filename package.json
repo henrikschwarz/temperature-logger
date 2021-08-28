@@ -1,14 +1,9 @@
 {
-<<<<<<< HEAD
   "name": "temperature-logger",
-=======
-  "name": "temperature-logger-api",
->>>>>>> c4e9519c5f32ff2bafc25d6e3fdd1b54d42221a2
   "version": "0.0.0",
   "private": true,
   "scripts": {
     "start": "node ./bin/www",
-<<<<<<< HEAD
     "test": "cross-env NODE_ENV=test jest --testTimeout=10000 "
   },
   "jest": {
@@ -16,10 +11,6 @@
     "coveragePathIgnorePatterns": [
       "/node_modules/"
     ]
-=======
-    "test": "cross-env NODE_ENV=test jest --testTimeout=10000 --detectOpenHandles",
-    "test:handles": "cross-env NODE_ENV=test jest --testTimeout=10000 --detectOpenHandles"
->>>>>>> c4e9519c5f32ff2bafc25d6e3fdd1b54d42221a2
   },
   "dependencies": {
     "cookie-parser": "~1.4.4",
@@ -30,10 +21,6 @@
     "morgan": "~1.9.1"
   },
   "devDependencies": {
-<<<<<<< HEAD
-=======
-    "axios": "^0.21.1",
->>>>>>> c4e9519c5f32ff2bafc25d6e3fdd1b54d42221a2
     "chance": "^1.1.7",
     "cross-env": "^7.0.3",
     "dotenv": "^10.0.0",
@@ -41,10 +28,6 @@
     "express-session": "^1.17.2",
     "jest": "^27.0.5",
     "mongoose": "^5.12.15",
-<<<<<<< HEAD
-=======
-    "request": "^2.88.2",
->>>>>>> c4e9519c5f32ff2bafc25d6e3fdd1b54d42221a2
     "sequelize-cli": "^6.2.0",
     "supertest": "^6.1.3"
   }
