@@ -3,7 +3,6 @@ var express = require('express');
 var path = require('path');
 require('dotenv').config();
 var mongoose = require('mongoose');
-var config = require('./config')[process.env.NODE_ENV];
 
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
@@ -11,10 +10,20 @@ var apiRouter = require('./routes/api_routes');
 var makeRouter = require('./routes/populating_db');
 
 var app = express();
-global.app_title = (process.env.APP_TITLE) ? process.env.APP_TITLE : 'Meal planer'; // set the app title
+global.app_title = (process.env.APP_TITLE) ? process.env.APP_TITLE : 'Temperature Logger'; // set the app title
 
+let HOST = process.env.MONGO_HOST;
+let PORT = process.env.MONGO_PORT;
+let DB_OLPTIONS = {
+  'development': process.env.MONGO_DEV_DB,
+  'test': process.env.MONGO_TEST_DB
+}
+let DB = DB_OLPTIONS[process.env.NODE_ENV]
 
-mongoose.connect(config.DBConnect,
+let CONNECT_STRING = `mongodb://${HOST}:${PORT}/${DB}`;
+
+console.log('Connecting to database using ' + CONNECT_STRING);
+mongoose.connect(CONNECT_STRING,
   {
     useUnifiedTopology: true, 
     useCreateIndex: true,
