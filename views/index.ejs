@@ -9,14 +9,14 @@
 <body>
     Hello there! go to:
     <ul>
-        <% if (global.loggedIn === true) { %>
-            <li><a href="/device/add">Add device</a></li>
+        <% if (locals.authenticated === true) { %>
+            <li><a href="/devices/add">Add device</a></li>
             <li><a href="/dataset/add">Add dataset</a></li>
         <% }  else { %>
             <li><a href="/login">Login</a></li>
         <% } %>
             <li><a href="/devices">Devices</a></li>
-        <% if (global.loggedIn === true) { %>
+        <% if (locals.authenticated === true) { %>
             <li><a href="/logout">Logout</a></li>
         <% } %>
     </ul>

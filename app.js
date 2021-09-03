@@ -3,24 +3,17 @@ var express = require('express');
 var path = require('path');
 require('dotenv').config();
 var mongoose = require('mongoose');
-
+var CONNECT_STRING = require('./dbconfig');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api_routes');
 var makeRouter = require('./routes/populating_db');
+var session = require('express-session');
 
 var app = express();
 global.app_title = (process.env.APP_TITLE) ? process.env.APP_TITLE : 'Temperature Logger'; // set the app title
 
-let HOST = process.env.MONGO_HOST;
-let PORT = process.env.MONGO_PORT;
-let DB_OLPTIONS = {
-  'development': process.env.MONGO_DEV_DB,
-  'test': process.env.MONGO_TEST_DB
-}
-let DB = DB_OLPTIONS[process.env.NODE_ENV]
-
-let CONNECT_STRING = `mongodb://${HOST}:${PORT}/${DB}`;
+global.loggedIn = false;
 
 console.log('Connecting to database using ' + CONNECT_STRING);
 mongoose.connect(CONNECT_STRING,
@@ -36,6 +29,26 @@ mongoose.connect(CONNECT_STRING,
 );
 
 
+// sessions
+var sess = {
+  secret: process.env.SECRET,
+  cookie: {}
+}
+
+if (app.get('env') === 'production') {
+  app.set('trust proxy', 1) // trust first proxy
+  sess.cookie.secure = true // serve secure cookies
+}
+
+app.use(session(sess))
+
+
+// middleware
+const loggedInData = require('./middleware/loggedInData');
+
+app.use(loggedInData);
+
+
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -47,10 +60,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
 
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   next(createError(404));
 });
+
 
 // error handler
 app.use(function(err, req, res, next) {

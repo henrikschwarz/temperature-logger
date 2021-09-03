@@ -1,6 +1,6 @@
 var express = require('express');
 var router = express.Router();
-var authMiddleware = require('../middleware/authenticated');
+var authMiddleware = require('../middleware/isAuthenticated');
 
 var Device = require("../models/device");
 var Dataset = require("../models/dataset");
@@ -20,10 +20,10 @@ router.post("/login", function(req, res){
   admin_password = process.env.ADMIN_PASSWORD;
 
   if (req.body['username'] === admin_username && req.body['password'] === admin_password){
-    global.loggedIn = true;
+    req.session.loggedIn = true;
     res.redirect('/');
   } else {
-    res.redirect('back', {error: "Wrong credentials"});
+    res.redirect('back', 401, {error: "Wrong credentials"});
   }
 })
 
@@ -32,14 +32,10 @@ router.get('/logout', function(req, res) {
   res.redirect("/");
 })
 
-router.post('/device/add', authMiddleware, function(req, res){
+router.post('/devices/add', authMiddleware, function(req, res){
   let name = req.body['name'];
-  let device_id = req.body['device_id'];
-  let unit = req.body['unit'];
   Device.create({
-    name: name,
-    device_id: device_id,
-    unit: unit
+    name: name
   }, function(err, device){
     if (err){
       console.log(err);
@@ -47,27 +43,28 @@ router.post('/device/add', authMiddleware, function(req, res){
       return;
     }
     res.status(201).send(`added device ${device.name}`);
-  })
-})
+  });
+});
 
-router.get('/device/add', authMiddleware, function(req, res){
-  res.render('device_add', {title: "Adding device"})
-})
+router.get('/devices/add', authMiddleware, function(req, res){
+  res.render('device/device_add', {title: "Adding device"})
+});
 
 router.get('/devices', async function(req, res){
     const all_devices = await Device.find({});
-    res.render('devices', {title: 'Devices', devices: all_devices});
-})
+    res.render('device/devices', {title: 'Devices', devices: all_devices});
+});
 
-router.get('/device/:id', async function(req, res){
-  const device = await Device.findOne({device_id: req.params.id});
-  if (!device){
+router.get('/devices/:id', async function(req, res){
+  const device = await Device.findById(req.params.id);
+  const datasets = await Dataset.find({device: device});
+  if (!device || !datasets){
     res.status(404).send("Doesnt exist");
     console.log("Doesnt exist");
     return false;
   }
   try {
-    res.render('show_device', {title: "Device", device: device});
+    res.render('device/show_device', {title: "Device", device: device, datasets: datasets});
   } catch(error){ 
     res.status(404).send("Error");
     return; 
@@ -79,7 +76,7 @@ router.get('/dataset/add', async function(req, res){
     if ( !device_list){
       res.send(404).send("err")
     }
-    res.render('add_dataset', {title: "Add device", device_list: device_list});
+    res.render('dataset/add_dataset', {title: "Add device", device_list: device_list});
 })
 
 router.post('/dataset/add', async function(req, res){
@@ -101,7 +98,7 @@ router.post('/dataset/add', async function(req, res){
     })
   } catch (e) {
     console.log(e);
-    next();
+    res.status(401).send("Something went wrong");
   }
 })
 
@@ -120,6 +117,23 @@ router.post('/dataset/:api_key/add', async function(req, res){
 
 router.get("/401", function(req, res){
   res.status(401).render('401');
+})
+
+router.get('/datasets/', async function(req, res){
+  let datasets = await Dataset.find({});
+  if (!datasets){
+    return res.status(404).send("Couldn't find the datasets");
+  }
+  res.render('dataset/show_datasets', {datasets: datasets});
+})
+
+router.get('/datasets/:device_id', async function(req, res){
+  let dataset = await Dataset.findById(req.params.device_id);
+  if (!dataset){
+    res.status(404).send("Couldn't find the dataset");
+    return;
+  }
+  res.render("dataset/dataset", {dataset: dataset})
 })
 
 module.exports = router;

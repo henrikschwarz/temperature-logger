@@ -4,15 +4,16 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title><%- process.env.APP_TITLE -%> </title>
+    <title>Devices - <%- process.env.APP_TITLE -%></title>
 </head>
 <body>
-    <% if (!devices.length) { %>
-        <h2>There are no devices</h2>
+    <h2>List of datasets:</h2>
+    <% if (!datasets.length) { %>
+    <p>There are no datasets</p>
     <% } else { %>
     <ul>
-    <% for (let device of devices) { %>
-        <li><a href="/device/<%- device.device_id %>"><%- device.name %> </a></li>
+    <% for (let item of datasets){ %>
+        <a href="/datasets/<%- item._id %>"><li> <%- item.name %></li></a>
     <% } %>
     </ul>
     <% } %>
