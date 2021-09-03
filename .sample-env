@@ -1,0 +1,11 @@
+APP_TITLE=<app name>
+MONGO_ADMIN_USERNAME=<mongo username>
+MONGO_ADMIN_PASSWORD=<mongo password>
+MONGO_HOST=<host: localhost normally>
+MONGO_PORT=<mongo port>
+MONGO_TEST_DB=<test db>
+MONGO_DEV_DB=<dev db>
+NODE_ENV=<env>
+PORT=<port
+ADMIN_USERNAME=<username for admin account to the site>
+ADMIN_PASSWORD=<password for admin account to the site>
