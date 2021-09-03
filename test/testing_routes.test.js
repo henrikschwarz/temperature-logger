@@ -18,8 +18,8 @@ afterEach((done) => {
     });
 });
 
-describe("Testing index view", () =>{
-    it("Testing the index view", async ()=> {
+describe("Testing index views", () =>{
+    it("Testing the login view", async ()=> {
         await supertest(app).post("/login").send({username: process.env.ADMIN_USERNAME, password: process.env.ADMIN_PASSWORD}); // log in so we can access the page.
         const res = await supertest(app).get("/");
         expect(res.statusCode).toEqual(200);
@@ -28,6 +28,12 @@ describe("Testing index view", () =>{
 })
 
 describe("Testing the device routes", ()=>{
+    beforeEach( (done) => {
+        supertest(app).post("/login").send({username: process.env.ADMIN_USERNAME, password: process.env.ADMIN_PASSWORD})
+        .then( () =>{
+            done();
+        }); // log in so we can access the page.
+    })
     it("Add device", async () =>{
         let name = "device 1";
         const res = await supertest(app).post('/devices/add').send({

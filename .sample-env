@@ -9,3 +9,4 @@ NODE_ENV=<env>
 PORT=<port
 ADMIN_USERNAME=<username for admin account to the site>
 ADMIN_PASSWORD=<password for admin account to the site>
+SECRET=<enter secret for sessions>
