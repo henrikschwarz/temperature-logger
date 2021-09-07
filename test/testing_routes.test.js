@@ -28,11 +28,17 @@ describe("Testing index views", () =>{
 })
 
 describe("Testing the device routes", ()=>{
-    beforeEach( (done) => {
+    let token; // variable to store the auth token
+
+    beforeAll( (done) => {
         supertest(app).post("/login").send({username: process.env.ADMIN_USERNAME, password: process.env.ADMIN_PASSWORD})
-        .then( () =>{
-            done();
+        .end( (err, response) => {
+            console.log(response.statusCode);
+            token = response.cookies;
+            console.log("Token is : " + token);
         }); // log in so we can access the page.
+
+        done();
     })
     it("Add device", async () =>{
         let name = "device 1";
