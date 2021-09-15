@@ -9,6 +9,7 @@ var usersRouter = require('./routes/users');
 var apiRouter = require('./routes/api_routes');
 var makeRouter = require('./routes/populating_db');
 var session = require('express-session');
+var bodyParser = require('body-parser');
 
 var app = express();
 global.app_title = (process.env.APP_TITLE) ? process.env.APP_TITLE : 'Temperature Logger'; // set the app title
@@ -29,9 +30,14 @@ mongoose.connect(CONNECT_STRING,
 );
 
 
+// parse body
+app.use(express.json());
+app.use(express.urlencoded({'extended': true}));
+
 // sessions
 var sess = {
   secret: process.env.SECRET,
+  rolling: false, 
   cookie: {}
 }
 

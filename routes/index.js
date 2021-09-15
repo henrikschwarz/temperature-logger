@@ -25,6 +25,7 @@ router.post("/login", function(req, res){
   } else {
     res.redirect('back', 401, {error: "Wrong credentials"});
   }
+  console.log(req.sessionID);
 })
 
 router.get('/logout', function(req, res) {
@@ -38,7 +39,6 @@ router.post('/devices/add', authMiddleware, function(req, res){
     name: name
   }, function(err, device){
     if (err){
-      console.log(err);
       res.status(500).send(err);
       return;
     }

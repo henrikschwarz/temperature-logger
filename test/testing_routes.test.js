@@ -33,9 +33,9 @@ describe("Testing the device routes", ()=>{
     beforeAll( (done) => {
         supertest(app).post("/login").send({username: process.env.ADMIN_USERNAME, password: process.env.ADMIN_PASSWORD})
         .end( (err, response) => {
-            console.log(response.statusCode);
-            token = response.cookies;
-            console.log("Token is : " + token);
+            //console.log(err);
+            token = response.header['set-cookie']; // get the cookie data
+            //console.log("Token is : " + token);
         }); // log in so we can access the page.
 
         done();
@@ -44,7 +44,7 @@ describe("Testing the device routes", ()=>{
         let name = "device 1";
         const res = await supertest(app).post('/devices/add').send({
             name: name
-        });
+        }).set('Cookie', token); // set the cookie header (https://stackoverflow.com/a/38234070)
         expect(res.statusCode).toEqual(201);
     });
 
