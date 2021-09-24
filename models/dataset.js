@@ -20,6 +20,7 @@ const datasetSchema = new mongoose.Schema({
         type: String,
         length: 128,
         unique: true,
+        default: ()=> {return chance.string({ length: 128, casing: 'upper', alpha: true, numeric: true })}
     },
     dataset: {
         type: [data_subschema]
@@ -36,11 +37,6 @@ data_subschema.pre('validate', function(next){
     next();
 })
 
-
-datasetSchema.pre('validate', function(next){
-    this.api_key = chance.string({ length: 128, casing: 'upper', alpha: true, numeric: true });
-    next();
-})
 
 const Dataset = mongoose.model('Dataset', datasetSchema);
 

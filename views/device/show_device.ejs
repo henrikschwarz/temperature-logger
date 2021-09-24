@@ -12,7 +12,7 @@
     <% if (datasets.length) { %>
     <ol>
         <% for (let dataset of datasets) { %>
-        <li><%- dataset.name -%></li>
+        <a href="/datasets/<%-dataset._id %>"><li><%- dataset.name -%></li></a>
         <% } %>
     </ol>
     <% } else { %>

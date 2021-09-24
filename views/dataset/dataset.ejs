@@ -8,7 +8,17 @@
 </head>
 <body>
     <a href="/datasets/"><- Go back</a> <br>
-    <h2>Title: <%- dataset.name -%></h2>
-    <p><%- dataset.dataset -%></p>
+    <h2>Title: <%- dataset.name -%></h2> <br>
+    <% if (locals.authenticated) { %>
+    <h5>Api key:</h5>
+    <textarea cols="20" rows="5"><%- dataset.api_key-%></textarea>
+    <% } %>
+    <br>
+    Data:
+    <% if (dataset.dataset.length) { %>
+        <p><% for (let d of dataset.dataset) { %>  <%- d.data -%>, <% } %> </p>
+    <% } else { %>
+        <p>There is no data at the moment</p>
+    <% } %>
 </body>
 </html>

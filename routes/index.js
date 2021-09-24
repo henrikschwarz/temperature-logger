@@ -105,11 +105,13 @@ router.post('/dataset/add', async function(req, res){
 router.post('/dataset/:api_key/add', async function(req, res){
   const selected_dataset = await Dataset.findOne({api_key: req.params.api_key});
   if (!selected_dataset){
-    res.status(404).send("not found");
+    res.status(404).send("Could't find dataset");
     console.log("Didnt find dataset");
     return false;
   }
+  console.log('Content type is ' + req.get('content-type'));
   data = req.body['data'];
+  console.log(`Data is ${data}`);
   selected_dataset.dataset.push({data: data});
   await selected_dataset.save();
   res.status(201).send('success');
@@ -128,7 +130,8 @@ router.get('/datasets/', async function(req, res){
 })
 
 router.get('/datasets/:device_id', async function(req, res){
-  let dataset = await Dataset.findById(req.params.device_id);
+  let dataset = await Dataset.findById(req.params.
+    device_id);
   if (!dataset){
     res.status(404).send("Couldn't find the dataset");
     return;
