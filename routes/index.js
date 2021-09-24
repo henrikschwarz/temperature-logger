@@ -11,6 +11,10 @@ router.get('/', function(req, res, next) {
   res.render('index', { title: 'Index' });
 });
 
+router.get('/todo', function(req,res){
+  res.render('todo');
+})
+
 router.get("/login", function(req, res){
   res.render("login", {title: "Login"})
 })
@@ -25,11 +29,11 @@ router.post("/login", function(req, res){
   } else {
     res.redirect('back', 401, {error: "Wrong credentials"});
   }
-  console.log(req.sessionID);
 })
 
 router.get('/logout', function(req, res) {
   global.loggedIn = false;
+  req.session.destroy();
   res.redirect("/");
 })
 

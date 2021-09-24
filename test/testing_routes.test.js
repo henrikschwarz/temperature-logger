@@ -86,7 +86,6 @@ describe("Testing the dataset collection", ()=> {
         let sample_data = {data: 27.1};
         const device = await Device.create(sample_device_info);
         const new_set = await Dataset.create( { name: "Test set", dataset: [], device: device } );
-        // console.log(new_set);
         const res = await supertest(app).post(`/dataset/${new_set.api_key}/add`).send(sample_data);
         expect(res.statusCode).toEqual(201);
         const test_new_set = await Dataset.findOne({api_key: new_set.api_key});
